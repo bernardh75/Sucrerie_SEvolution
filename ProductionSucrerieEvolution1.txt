@@ -1,0 +1,81 @@
+***Schéma relationnel correspond au nouveau MCD sucrerie evolution : 
+
+CLIENT (id_client, nom, prenom, adresse, cp, ville, tel)
+	Clé primaire : id_client
+
+COMMANDE (id_commande, date_creation, etat)
+	Clé primaire : id_commande
+	Clé étrangère : id_client en référence à id_client de CLIENT
+
+LIGNE_COMMANDE (id_commande, id_produit, quantite, pourcentage_remise)
+	Clé primaire : id_commande, id_produit
+	Clés étrangères : id_commande en référence à id_commande de COMMANDE
+			  id_produit en référence à id_produit de PRODUIT
+
+
+////PRODUIT (id_produit, designation, prix_hors_taxes,
+	bbpiece : nombre_pieces, poids_app_piece
+	bbpoids : POIDS
+	gtpoids : poids, date_peremption)
+	Clé primaire : id_produit////
+
+
+***Script de création des tables ligne_commande et bonbon_poids :
+
+CREATE TABLE LIGNE_COMMANDE(
+        id_commande        Int NOT NULL ,
+	numero             int (11) Auto_increment  NOT NULL ,
+        quantite           Int ,
+        pourcentage_remise Float ,
+        id_produit         Int NOT NULL ,
+        PRIMARY KEY (id_commande, id_produit)
+)ENGINE=InnoDB;
+
+ALTER TABLE LIGNE_COMMANDE ADD CONSTRAINT FK_LIGNE_COMMANDE_id_commande FOREIGN KEY (id_commande) REFERENCES COMMANDE(id_commande);
+ALTER TABLE LIGNE_COMMANDE ADD CONSTRAINT FK_LIGNE_COMMANDE_id_produit FOREIGN KEY (id_produit) REFERENCES PRODUIT(id_produit);
+
+---
+
+
+CREATE TABLE BONBON_POIDS(
+        poids     Int NOT NULL,
+        id_produit Int NOT NULL ,
+        PRIMARY KEY (id_produit )
+)ENGINE=InnoDB;
+
+ALTER TABLE BONBON_POIDS ADD CONSTRAINT FK_BONBON_POIDS_id_produit FOREIGN KEY (id_produit) REFERENCES PRODUIT(id_produit);
+
+***Insérons un produit dans la base
+
+
+
+
+
+
+CREATE TABLE GATEAU_POIDS(
+        poids  Int NOT NULL,
+        id_produit Int PRIMARY KEY  ,
+	date_peremption varchar(20) NOT NULL
+)ENGINE=InnoDB;
+
+
+
+@Avec la méthodologie :
+
+1) Copier la table au cas où :
+
+CREATE TABLE produit_copie
+  AS (SELECT * FROM produit);
+
+2) Créer les 3 tables 
+BONBON_PIECE
+BONBON_POIDS
+GATEAU_POIDS
+
+3) Modifier la structure de la table produit :
+(supprimer le champ quantite...)
+
+
+
+
+
